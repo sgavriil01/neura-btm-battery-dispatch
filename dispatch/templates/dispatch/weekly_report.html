@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weekly Battery Dispatch Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background: #f7f7f7;
+            color: #222;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: white;
+            padding: 32px;
+            border-radius: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 32px;
+        }
+
+        th, td {
+            padding: 14px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #f0f0f0;
+        }
+
+        .saving {
+            font-weight: bold;
+        }
+
+        img {
+            width: 100%;
+            margin-top: 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .note {
+            margin-top: 28px;
+            color: #555;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Weekly Battery Dispatch Report</h1>
+    <p>Behind-the-meter battery dispatch for a representative Cyprus hotel week.</p>
+
+    <table>
+        <tr>
+            <th>Metric</th>
+            <th>Value</th>
+        </tr>
+        <tr>
+            <td>Grid spend without battery</td>
+            <td>€{{ report.grid_spend_without_battery|floatformat:2 }}</td>
+        </tr>
+        <tr>
+            <td>Grid spend with battery</td>
+            <td>€{{ report.grid_spend_with_battery|floatformat:2 }}</td>
+        </tr>
+        <tr>
+            <td class="saving">Weekly saving</td>
+            <td class="saving">€{{ report.saving|floatformat:2 }}</td>
+        </tr>
+        <tr>
+            <td>Total charged energy</td>
+            <td>{{ report.total_charged_kwh|floatformat:2 }} kWh</td>
+        </tr>
+        <tr>
+            <td>Total discharged energy</td>
+            <td>{{ report.total_discharged_kwh|floatformat:2 }} kWh</td>
+        </tr>
+        <tr>
+            <td>Solar self-consumption</td>
+            <td>{{ report.solar_self_consumption_percent|floatformat:2 }}%</td>
+        </tr>
+    </table>
+
+    <h2>Battery SoC Curve</h2>
+    <img src="data:image/png;base64,{{ report.soc_chart_base64 }}" alt="Battery SoC curve">
+
+    <p class="note">
+        Policy: solar covers hotel load first, surplus solar charges the battery,
+        the battery discharges during day-rate periods, and remaining demand comes from the grid.
+        Grid export is not allowed.
+    </p>
+</div>
+</body>
+</html>
