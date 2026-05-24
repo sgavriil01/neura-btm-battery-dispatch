@@ -124,10 +124,7 @@ def fetch_renewables_ninja_solar_kw(
         return None
 
     hourly = pd.DataFrame.from_dict(raw_data, orient="index")
-    hourly.index = pd.to_datetime(hourly.index)
-
-    if hourly.index.tz is None:
-        hourly.index = hourly.index.tz_localize("UTC")
+    hourly.index = pd.to_datetime(hourly.index.astype("int64"), unit="ms", utc=True)
 
     hourly.index = hourly.index.tz_convert(TIMEZONE)
 
